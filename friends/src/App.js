@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
 import axios from 'axios';
+import FriendList from './components/FriendList';
+import FriendForm from './components/FriendForm';
 
 class App extends Component {
   state = {
@@ -33,6 +36,7 @@ class App extends Component {
       .then(({ data }) =>
         this.setState({
           friends: data,
+          id: '',
           name: '',
           age: '',
           email: ''
@@ -63,61 +67,30 @@ class App extends Component {
     const { friends, name, age, email } = this.state;
     return (
       <div className="app">
-        <ul>
-          {friends.length ? (
-            friends.map(friend => (
-              <li key={friend.id} onClick={() => this.updateFriend(friend)}>
-                <span onClick={e => this.deleteFriend(e, friend.id)}>
-                  &times;
-                </span>
-                <span>
-                  {friend.name} is {friend.age} years old. Email them at:{' '}
-                  {friend.email}
-                </span>
-              </li>
-            ))
-          ) : (
-            <div>Loading...</div>
+        <Route
+          path="/"
+          render={props => (
+            <FriendList
+              {...props}
+              friends={friends}
+              updateFriend={this.updateFriend}
+              deleteFriend={this.deleteFriend}
+            />
           )}
-        </ul>
-        <form onSubmit={this.handleFriendSubmit}>
-          <div>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              placeholder="Name"
-              value={name}
-              onChange={this.onChangeHandler}
-              required
-            />{' '}
-          </div>
-          <div>
-            <input
-              type="number"
-              name="age"
-              id="age"
-              placeholder="Age"
-              value={age}
-              onChange={this.onChangeHandler}
-              required
+        />
+        <Route
+          path="/add-friend"
+          render={props => (
+            <FriendForm
+              {...props}
+              name={name}
+              age={age}
+              email={email}
+              handleFriendSubmit={this.handleFriendSubmit}
+              onChangeHandler={this.onChangeHandler}
             />
-          </div>
-          <div>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              placeholder="Email"
-              value={email}
-              onChange={this.onChangeHandler}
-              required
-            />
-          </div>
-          <div>
-            <input type="submit" value="Submit" />
-          </div>
-        </form>
+          )}
+        />
       </div>
     );
   }
