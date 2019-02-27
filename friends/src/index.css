@@ -1,0 +1,64 @@
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
+}
+
+body,
+input {
+  color: #bfbfbf;
+  background-color: #1a1a1a;
+}
+
+.app {
+  max-width: fit-content;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.app ul {
+  border: 1px solid black;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.app li {
+  cursor: pointer;
+}
+
+.app li > span:first-child {
+  color: #e69999;
+  font-weight: bold;
+  margin-right: 0.5rem;
+  transition: 200ms;
+}
+
+.app li > span:first-child:hover {
+  color: red;
+}
+
+.app li > span:last-child {
+  transition: 200ms;
+}
+
+.app li > span:last-child:hover {
+  opacity: 0.65;
+}
+
+.app form {
+  width: 100%;
+}
+
+.app form > div {
+  width: 95%;
+  margin: 0 auto;
+}
+
+.app form > div > input {
+  width: 100%;
+  margin: 0.3rem 0;
+  padding: 0.5rem;
+  border: 1px solid rgba(100, 100, 100, 0.5);
+}

@@ -4,10 +4,10 @@ import axios from 'axios';
 class App extends Component {
   state = {
     friends: [],
-    id: null,
-    name: null,
-    age: null,
-    email: null
+    id: '',
+    name: '',
+    age: '',
+    email: ''
   };
 
   componentDidMount() {
@@ -45,6 +45,14 @@ class App extends Component {
     this.setState({ name, age, email, id });
   };
 
+  deleteFriend = (e, id) => {
+    e.stopPropagation();
+    axios
+      .delete(`http://localhost:5000/friends/${id}`)
+      .then(({ data }) => this.setState({ friends: data }))
+      .catch(err => console.error(err));
+  };
+
   onChangeHandler = e => {
     this.setState({
       [e.target.name]: e.target.value
@@ -54,13 +62,18 @@ class App extends Component {
   render() {
     const { friends, name, age, email } = this.state;
     return (
-      <div>
+      <div className="app">
         <ul>
           {friends.length ? (
             friends.map(friend => (
               <li key={friend.id} onClick={() => this.updateFriend(friend)}>
-                {friend.name} is {friend.age} years old. Email them at:{' '}
-                {friend.email}
+                <span onClick={e => this.deleteFriend(e, friend.id)}>
+                  &times;
+                </span>
+                <span>
+                  {friend.name} is {friend.age} years old. Email them at:{' '}
+                  {friend.email}
+                </span>
               </li>
             ))
           ) : (
@@ -68,34 +81,42 @@ class App extends Component {
           )}
         </ul>
         <form onSubmit={this.handleFriendSubmit}>
-          <label htmlFor="name">Name:</label>{' '}
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={name}
-            onChange={this.onChangeHandler}
-            required
-          />{' '}
-          <label htmlFor="age">Age:</label>{' '}
-          <input
-            type="number"
-            name="age"
-            id="age"
-            value={age}
-            onChange={this.onChangeHandler}
-            required
-          />{' '}
-          <label htmlFor="email">Email:</label>{' '}
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={email}
-            onChange={this.onChangeHandler}
-            required
-          />{' '}
-          <input type="submit" value="Submit" />
+          <div>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Name"
+              value={name}
+              onChange={this.onChangeHandler}
+              required
+            />{' '}
+          </div>
+          <div>
+            <input
+              type="number"
+              name="age"
+              id="age"
+              placeholder="Age"
+              value={age}
+              onChange={this.onChangeHandler}
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Email"
+              value={email}
+              onChange={this.onChangeHandler}
+              required
+            />
+          </div>
+          <div>
+            <input type="submit" value="Submit" />
+          </div>
         </form>
       </div>
     );
