@@ -4,6 +4,7 @@ import axios from 'axios';
 class App extends Component {
   state = {
     friends: [],
+    id: null,
     name: null,
     age: null,
     email: null
@@ -20,11 +21,15 @@ class App extends Component {
       .catch(err => console.error(err));
   }
 
-  handleNewFriend = event => {
+  handleFriendSubmit = event => {
     event.preventDefault();
-    const { name, age, email } = this.state;
-    axios
-      .post('http://localhost:5000/friends', { name, age, email })
+
+    const { name, age, email, id } = this.state;
+    const url = id
+      ? `http://localhost:5000/friends/${id}`
+      : 'http://localhost:5000/friends';
+
+    axios[id ? 'put' : 'post'](url, { name, age, email })
       .then(({ data }) =>
         this.setState({
           friends: data,
@@ -34,6 +39,10 @@ class App extends Component {
         })
       )
       .catch(err => console.error(err));
+  };
+
+  updateFriend = ({ id, name, age, email }) => {
+    this.setState({ name, age, email, id });
   };
 
   onChangeHandler = e => {
@@ -49,7 +58,7 @@ class App extends Component {
         <ul>
           {friends.length ? (
             friends.map(friend => (
-              <li key={friend.id}>
+              <li key={friend.id} onClick={() => this.updateFriend(friend)}>
                 {friend.name} is {friend.age} years old. Email them at:{' '}
                 {friend.email}
               </li>
@@ -58,7 +67,7 @@ class App extends Component {
             <div>Loading...</div>
           )}
         </ul>
-        <form onSubmit={this.handleNewFriend}>
+        <form onSubmit={this.handleFriendSubmit}>
           <label htmlFor="name">Name:</label>{' '}
           <input
             type="text"
