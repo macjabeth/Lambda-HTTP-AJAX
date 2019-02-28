@@ -56,10 +56,12 @@ input {
   padding: 0.25em 1em;
   font-variant: small-caps;
   font-weight: bold;
+  outline: none;
 }
 
 .app form {
   width: 100%;
+  margin-top: 0.5rem;
 }
 
 .app form > div {

@@ -1,10 +1,13 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
 import Friend from './Friend';
 
 const FriendList = ({ friends, ...props }) => {
   function displayForm() {
     props.history.push('/add-friend');
+  }
+
+  function goBack() {
+    props.history.goBack();
   }
 
   return (
@@ -18,11 +21,11 @@ const FriendList = ({ friends, ...props }) => {
           <div>Loading...</div>
         )}
       </ul>
-      <Route
-        exact
-        path="/"
-        render={() => <button onClick={displayForm}>Display Form</button>}
-      />
+      {props.location.pathname === '/' ? (
+        <button onClick={displayForm}>Display Form</button>
+      ) : (
+        <button onClick={goBack}>Go Back</button>
+      )}
     </div>
   );
 };

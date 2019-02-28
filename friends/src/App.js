@@ -4,13 +4,12 @@ import axios from 'axios';
 import FriendList from './components/FriendList';
 import FriendForm from './components/FriendForm';
 
+const initialFrenn = { id: '', name: '', age: '', email: '' };
+
 class App extends Component {
   state = {
     friends: [],
-    id: '',
-    name: '',
-    age: '',
-    email: ''
+    frenn: initialFrenn
   };
 
   componentDidMount() {
@@ -27,26 +26,18 @@ class App extends Component {
   handleFriendSubmit = event => {
     event.preventDefault();
 
-    const { name, age, email, id } = this.state;
+    const { name, age, email, id } = this.state.frenn;
     const url = id
       ? `http://localhost:5000/friends/${id}`
       : 'http://localhost:5000/friends';
 
     axios[id ? 'put' : 'post'](url, { name, age, email })
-      .then(({ data }) =>
-        this.setState({
-          friends: data,
-          id: '',
-          name: '',
-          age: '',
-          email: ''
-        })
-      )
+      .then(({ data }) => this.setState({ friends: data, frenn: initialFrenn }))
       .catch(err => console.error(err));
   };
 
   updateFriend = ({ id, name, age, email }) => {
-    this.setState({ name, age, email, id });
+    this.setState({ frenn: { id, name, age, email } });
   };
 
   deleteFriend = (e, id) => {
@@ -57,14 +48,15 @@ class App extends Component {
       .catch(err => console.error(err));
   };
 
-  onChangeHandler = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+  onChangeHandler = ({ target: { name, value } }) => {
+    this.setState(state => ({ frenn: { ...state.frenn, [name]: value } }));
   };
 
   render() {
-    const { friends, name, age, email } = this.state;
+    const {
+      friends,
+      frenn: { name, age, email }
+    } = this.state;
     return (
       <div className="app">
         <Route
