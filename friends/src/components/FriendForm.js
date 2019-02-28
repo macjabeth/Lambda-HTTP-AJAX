@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const FriendForm = ({
   name,
@@ -46,5 +47,13 @@ const FriendForm = ({
     </div>
   </form>
 );
+
+FriendForm.propTypes = {
+  name: PropTypes.string.isRequired,
+  age: PropTypes.number.isRequired,
+  email: PropTypes.string.isRequired,
+  onChangeHandler: PropTypes.func.isRequired,
+  handleFriendSubmit: PropTypes.func.isRequired
+};
 
 export default FriendForm;

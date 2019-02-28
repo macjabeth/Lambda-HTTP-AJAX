@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import axios from 'axios';
 import FriendList from './components/FriendList';
@@ -10,6 +11,12 @@ class App extends Component {
   state = {
     friends: [],
     frenn: initialFrenn
+  };
+
+  static propTypes = {
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
   };
 
   componentDidMount() {
@@ -38,6 +45,8 @@ class App extends Component {
 
   updateFriend = ({ id, name, age, email }) => {
     this.setState({ frenn: { id, name, age, email } });
+    if (this.props.location.pathname !== '/add-friend')
+      this.props.history.push('/add-friend');
   };
 
   deleteFriend = (e, id) => {
@@ -74,7 +83,6 @@ class App extends Component {
           path="/add-friend"
           render={props => (
             <FriendForm
-              {...props}
               name={name}
               age={age}
               email={email}

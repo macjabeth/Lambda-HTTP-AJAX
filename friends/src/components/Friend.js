@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Friend = ({ friend, updateFriend, deleteFriend }) => (
   <li onClick={() => updateFriend(friend)}>
@@ -8,5 +9,11 @@ const Friend = ({ friend, updateFriend, deleteFriend }) => (
     </span>
   </li>
 );
+
+Friend.propTypes = {
+  friend: PropTypes.object.isRequired,
+  updateFriend: PropTypes.func.isRequired,
+  deleteFriend: PropTypes.func.isRequired
+};
 
 export default Friend;

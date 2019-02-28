@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Friend from './Friend';
 
 const FriendList = ({ friends, ...props }) => {
@@ -9,6 +10,8 @@ const FriendList = ({ friends, ...props }) => {
   function goBack() {
     props.history.goBack();
   }
+
+  console.log(props);
 
   return (
     <div>
@@ -28,6 +31,15 @@ const FriendList = ({ friends, ...props }) => {
       )}
     </div>
   );
+};
+
+FriendList.propTypes = {
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  friends: PropTypes.array.isRequired,
+  updateFriend: PropTypes.func.isRequired,
+  deleteFriend: PropTypes.func.isRequired
 };
 
 export default FriendList;
